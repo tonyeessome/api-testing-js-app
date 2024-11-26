@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
+// Chaîne de connexion à MongoDB
 const dbURI = "mongodb://localhost:27017/test-database";
 
+// Fonction pour établir la connexion à MongoDB
 const connectDB = async () => {
     try {
-        if (mongoose.connection.readyState === 0) { // Vérifie l'état de la connexion
+        if (mongoose.connection.readyState === 0) { // Vérifie si la connexion est inactive
             await mongoose.connect(dbURI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -18,7 +20,7 @@ const connectDB = async () => {
     }
 };
 
-// Définir le schéma et le modèle après s'être connecté
+// Schéma et modèle pour les chambres d'hôtel
 const hotelRoomSchema = new mongoose.Schema({
     roomNumber: { type: Number, required: true, unique: true },
     roomType: { type: String, required: true },
