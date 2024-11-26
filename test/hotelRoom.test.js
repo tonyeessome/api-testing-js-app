@@ -4,18 +4,18 @@ const { HotelRoom, connectDB } = require('../models/HotelRoom');
 describe('Hotel Room GET API Tests', () => {
     // Connecter à MongoDB avant tous les tests
     beforeAll(async () => {
-        await connectDB();
-        await HotelRoom.deleteMany(); // Nettoyer la collection avant les tests
+        await connectDB(); // Établit la connexion
+        await HotelRoom.deleteMany(); // Supprime toutes les données existantes
     });
 
-    // Nettoyage de la collection après chaque test
+    // Nettoyer la collection après chaque test
     afterEach(async () => {
-        await HotelRoom.deleteMany();
+        await HotelRoom.deleteMany(); // Nettoyer après chaque test
     });
 
     // Fermer la connexion après tous les tests
     afterAll(async () => {
-        await mongoose.connection.close();
+        await mongoose.connection.close(); // Ferme la connexion
     });
 
     test('should create a new room (happy path)', async () => {
@@ -33,7 +33,7 @@ describe('Hotel Room GET API Tests', () => {
     test('create a room with wrong info', async () => {
         try {
             const room = new HotelRoom({
-                roomNumber: 'NaN', // Mauvais type pour roomNumber
+                roomNumber: 'Invalid', // Mauvais type
                 roomType: 'Single',
                 pricePerNight: 100,
             });
@@ -43,18 +43,17 @@ describe('Hotel Room GET API Tests', () => {
         }
     });
 
-    test('should create a new room where roomNumber already exists in DB (unhappy path)', async () => {
+    test('should not create a room where roomNumber already exists', async () => {
         const room1 = new HotelRoom({
             roomNumber: 101,
             roomType: 'Single',
             pricePerNight: 100,
         });
-
         await room1.save();
 
         try {
             const room2 = new HotelRoom({
-                roomNumber: 101, // Même numéro de chambre
+                roomNumber: 101, // Même numéro
                 roomType: 'Double',
                 pricePerNight: 150,
             });

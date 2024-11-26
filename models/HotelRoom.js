@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 
-// Chaîne de connexion à MongoDB
+// Chaîne de connexion MongoDB
 const dbURI = "mongodb://localhost:27017/test-database";
 
-// Fonction pour établir la connexion à MongoDB
+// Fonction pour connecter à MongoDB
 const connectDB = async () => {
     try {
         if (mongoose.connection.readyState === 0) { // Vérifie si la connexion est inactive
-            await mongoose.connect(dbURI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
+            await mongoose.connect(dbURI);
             console.log('Connected to MongoDB');
         } else {
             console.log('Already connected to MongoDB');
